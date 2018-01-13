@@ -1,0 +1,81 @@
+<nodeDefs>
+    <!-- NODE DEF from 5.0 document http://wiki.universal-devices.com/index.php?title=V50_MAIN -->
+    <!-- controller -->
+    <nodeDef id="controller" nls="ctl">
+        <editors />
+        <sts>
+			    <st id="ST" editor="bool" />
+          <st id="GV1" editor="traffic_light" />
+          <st id="GV2" editor="profile"/>
+		    </sts>
+        <cmds>
+            <sends />
+            <accepts>
+              <cmd id="DISCOVER" />
+              <cmd id="SET_STATE">
+                <p id="" editor="traffic_light" init="GV1"/>
+              </cmd>
+            </accepts>
+        </cmds>
+    </nodeDef>
+
+    <nodeDef id="camNode" nls="cams">
+        <editors />
+        <sts>
+          <st id="ST" editor="bool" />
+          <st id="GV1" editor="bool" />
+          <st id="GV2" editor="bool" />
+          <st id="GV3" editor="bool" />
+          <st id="GV4" editor="bool" />
+          <st id="GV5" editor="bool" />
+          <st id="GV6" editor="bool" />
+          <st id="GV7" editor="profile" />
+        </sts>
+        <cmds>
+            <sends />
+            <accepts>
+              <cmd id="DON" />
+              <cmd id="PAUSE" />
+              <cmd id="CONTINUE" />
+              <cmd id="ENABLE" />
+              <cmd id="DISABLE" />
+              <cmd id="IR">
+                <p id="" editor="IR"/>
+              </cmd>
+            </accepts>
+        </cmds>
+    </nodeDef>
+
+  <nodeDef id="camNodePTZ" nls="cams">
+    <editors />
+    <sts>
+      <st id="ST" editor="bool" />
+      <st id="GV1" editor="bool" />
+      <st id="GV2" editor="bool" />
+      <st id="GV3" editor="bool" />
+      <st id="GV4" editor="bool" />
+      <st id="GV5" editor="bool" />
+      <st id="GV6" editor="bool" />
+      <st id="GV7" editor="profile" />
+    </sts>
+    <cmds>
+      <sends />
+      <accepts>
+        <cmd id="DON" />
+        <cmd id="PAUSE" />
+        <cmd id="CONTINUE" />
+        <cmd id="ENABLE" />
+        <cmd id="DISABLE" />
+        <cmd id="IR">
+          <p id="" editor="IR"/>
+        </cmd>
+        <cmd id="PTZ">
+          <p id="" editor="PTZ"/>
+        </cmd>
+        <cmd id="POSITION">
+          <p id="" editor="position"/>
+        </cmd>
+      </accepts>
+    </cmds>
+  </nodeDef>
+</nodeDefs>

@@ -1,0 +1,68 @@
+# controller
+ND-controller-NAME = Blue Iris Server
+ND-controller-ICON = GenericCtl
+CMD-ctl-DISCOVER-NAME = Re-Discover
+CMD-ctl-SET_STATE-NAME = Set State
+ST-ctl-ST-NAME = NodeServer Online
+ST-ctl-GV1-NAME = Server Status
+ST-ctl-GV2-NAME = Profile Number
+
+# Camera Nodes:
+ND-camNode-NAME = Fixed Camera
+ND-camNode-ICON = GenericCtl
+ND-camNodePTZ-NAME = PTZ Camera
+ND-camNodePTZ-ICON = GenericCtl
+
+ST-cams-ST-NAME = Triggered
+ST-cams-GV1-NAME = Enabled
+ST-cams-GV2-NAME = Connected
+ST-cams-GV3-NAME = Motion Detected
+ST-cams-GV4-NAME = Alert Active
+ST-cams-GV5-NAME = Paused
+ST-cams-GV6-NAME = Recording
+ST-cams-GV7-NAME = Profile Number
+
+CMD-cams-DON-NAME = Trigger
+CMD-cams-PAUSE-NAME = Pause
+CMD-cams-CONTINUE-NAME = Continue
+CMD-cams-ENABLE-NAME = Enable
+CMD-cams-DISABLE-NAME = Disable
+CMD-cams-PTZ-NAME = Pan-Tilt-Zoom
+CMD-cams-IR-NAME = IR
+CMD-cams-POSITION-NAME = Set Position
+
+POSITIONS-1 = Position 1
+POSITIONS-2 = Position 2
+POSITIONS-3 = Position 3
+POSITIONS-4 = Position 4
+POSITIONS-5 = Position 5
+POSITIONS-6 = Position 6
+POSITIONS-7 = Position 7
+POSITIONS-8 = Position 8
+POSITIONS-9 = Position 9
+POSITIONS-10 = Position 10
+POSITIONS-11 = Position 11
+POSITIONS-12 = Position 12
+POSITIONS-13 = Position 13
+POSITIONS-14 = Position 14
+POSITIONS-15 = Position 15
+POSITIONS-16 = Position 16
+POSITIONS-17 = Position 17
+POSITIONS-18 = Position 18
+POSITIONS-19 = Position 19
+POSITIONS-20 = Position 20
+
+ENUM_PTZ-0 = Left
+ENUM_PTZ-1 = Right
+ENUM_PTZ-2 = Up
+ENUM_PTZ-3 = Down
+ENUM_PTZ-4 = Home
+ENUM_PTZ-5 = Zoom In
+ENUM_PTZ-6 = Zoom Out
+
+ENUM_IR-0 = IR Off
+ENUM_IR-1 = IR On
+
+LIGHT_STATES-0 = Red
+LIGHT_STATES-1 = Green
+LIGHT_STATES-2 = Yellow

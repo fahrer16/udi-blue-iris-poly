@@ -1,0 +1,23 @@
+<editors>
+    <editor id="bool">
+        <range uom="2" />
+    </editor>
+    <editor id="profile">
+      <range uom="56" min="0" max="7" prec="0" step="1"/>
+    </editor>
+    <editor id="count">
+      <range uom="56" min="0" max="65535" prec="0" step="1"/>
+    </editor>
+    <editor id="IR">
+      <range uom="25" subset="0,1" nls="ENUM_IR"/>
+    </editor>
+    <editor id="PTZ">
+      <range uom="25" subset="0-6" nls="ENUM_PTZ"/>
+    </editor>
+    <editor id="position">
+      <range uom="25" subset="1-20" nls="POSITIONS"/>
+    </editor>
+    <editor id="traffic_light">
+      <range uom="25" subset="0-2" nls="LIGHT_STATES"/>
+    </editor>
+</editors>

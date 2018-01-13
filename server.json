@@ -1,0 +1,21 @@
+{
+  "name": "BlueIris",
+  "docs": "https://github.com/Einstein42/udi-poly-template-python",
+  "type": "python3",
+  "executable": "blue-iris-poly.py",
+  "install": "install.sh",
+  "description": "Blue Iris UDI ISY Polyglot v2 Node Server",
+  "notice": "Blue Iris is trademarked.  This Node Server is neither developed nor endorsed by Perspective Software or Universal Devices (UDI).  The author takes no responsibility for the function of the software or any results of its use.  Use at your own risk.",
+  "shortPoll": "2",
+  "longPoll": "60",
+  "credits": [
+    {
+      "title": "Blue Iris",
+      "author": "Brian Feeney (fahrer16)",
+      "version": "1.0.0",
+      "date": "January 12, 2018",
+      "source": "https://github.com/fahrer16/udi-blue-iris-poly",
+      "license": "https://raw.githubusercontent.com/fahrer16/udi-blue-iris-poly/master/LICENSE"
+    }
+  ]
+}
