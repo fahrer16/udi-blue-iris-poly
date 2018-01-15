@@ -1,6 +1,6 @@
 <editors>
     <editor id="bool">
-        <range uom="2" />
+        <range uom="2" subset="0,1"/>
     </editor>
     <editor id="profile">
       <range uom="56" min="0" max="7" prec="0" step="1"/>
