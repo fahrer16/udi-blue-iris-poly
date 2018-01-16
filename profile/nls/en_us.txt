@@ -3,6 +3,7 @@ ND-controller-NAME = Blue Iris Server
 ND-controller-ICON = GenericCtl
 CMD-ctl-DISCOVER-NAME = Re-Discover
 CMD-ctl-SET_STATE-NAME = Set State
+CMD-ctl-SET_PROFILE-NAME = Set Profile
 ST-ctl-ST-NAME = NodeServer Online
 ST-ctl-GV1-NAME = Server Status
 ST-ctl-GV2-NAME = Profile Number

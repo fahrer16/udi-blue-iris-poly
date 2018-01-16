@@ -168,8 +168,21 @@ class Controller(polyinterface.Controller):
             LOGGER.error('Error setting state of Blue Iris Server: %s', str(ex))
             return False
 
+    def setProfile(self, command = None):
+        try:
+            LOGGER.info('Command received to set Blue iris Profile: %s', str(command))
+            _profile = int(command.get('value'))
+            if _profile >= 0 and _profile <= 7:
+                self.cmd("status",{"profile":_profile})
+                return True
+            else:
+                LOGGER.error('Commanded profile must be between 0 and 7 but received %i', _profile)
+                return False
+        except Exception as ex:
+            LOGGER.error('Error setting profile of Blue Iris Server: %s', str(ex))
+            return False
     id = 'controller'
-    commands = {'DISCOVER': discover, 'SET_STATE': setState}
+    commands = {'DISCOVER': discover, 'SET_STATE': setState, 'SET_PROFILE': setProfile}
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 2}, #Polyglot connection status
                 {'driver': 'GV1', 'value': 0, 'uom': 25}, #Blue Iris Server Status (0=red, 1=green, 2=yellow)
                 {'driver': 'GV2', 'value':0, 'uom': 56} #Blue Iris Profile

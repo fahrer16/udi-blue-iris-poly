@@ -28,3 +28,4 @@ This node server will import cameras as ISY Nodes, continuously poll for new eve
 ## Version History:
 * 1.0.0: Initial Release
 * 1.0.1: Corrected "bool" editor in profile
+* 1.1.0: Added command to set server profile
