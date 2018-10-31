@@ -98,9 +98,9 @@ class Controller(polyinterface.Controller):
         hostname = self.polyConfig['customParams']['hostip']
         response = os.system("ping -c 1 " + hostname)
         if response == 0:
-            self.setDriver('GV3',"0")
-        else:
             self.setDriver('GV3',"1")
+        else:
+            self.setDriver('GV3',"0")
             LOGGER.info('The Blue Iris computer is Down')
 
     def query(self, command=None):
