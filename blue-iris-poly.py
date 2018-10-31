@@ -8,6 +8,7 @@ Blue Iris json functionality based on 'blueiriscmd' project by magapp (https://g
 import polyinterface
 import requests, json, hashlib
 import sys
+import os
 
 
 LOGGER = polyinterface.LOGGER
@@ -38,9 +39,14 @@ class Controller(polyinterface.Controller):
                 self.password = self.polyConfig['customParams']['password']
             else:
                 self.password = ""
+                
+            if 'hostip' in self.polyConfig['customParams']:
+                self.hostip = self.polyConfig['customParams']['hostip']
+            else:
+                self.hostip = ""
 
-            if self.host == "" or self.user == "" or self.password == "":
-                LOGGER.error('Blue Iris requires \'host\', \'user\', and \'password\' parameters to be specified in custom configuration.')
+            if self.host == "" or self.user == "" or self.password == "" or self.hostip == "":
+                LOGGER.error('Blue Iris requires \'host\', \'hostip\', \'user\', and \'password\' parameters to be specified in custom configuration.')
                 return False
             else:
                 if self.connect(): 
@@ -89,7 +95,13 @@ class Controller(polyinterface.Controller):
             LOGGER.error('Error processing shortPoll for %s: %s', self.name, str(ex))
 
     def longPoll(self):
-        pass
+        hostname = self.polyConfig['customParams']['hostip']
+        response = os.system("ping -c 1 " + hostname)
+        if response == 0:
+            self.setDriver('GV3',"0")
+        else:
+            self.setDriver('GV3',"1")
+            LOGGER.info('The Blue Iris computer is Down')
 
     def query(self, command=None):
         try:
@@ -185,7 +197,8 @@ class Controller(polyinterface.Controller):
     commands = {'DISCOVER': discover, 'SET_STATE': setState, 'SET_PROFILE': setProfile}
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 2}, #Polyglot connection status
                 {'driver': 'GV1', 'value': 0, 'uom': 25}, #Blue Iris Server Status (0=red, 1=green, 2=yellow)
-                {'driver': 'GV2', 'value':0, 'uom': 56} #Blue Iris Profile
+                {'driver': 'GV2', 'value':0, 'uom': 56}, #Blue Iris Profile
+                {'driver': 'GV3', 'value':0, 'uom':2} #Blue Iris Host to ping
                 ] 
 
 
