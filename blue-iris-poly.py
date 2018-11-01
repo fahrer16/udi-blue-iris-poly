@@ -45,8 +45,8 @@ class Controller(polyinterface.Controller):
             else:
                 self.hostip = ""
 
-            if self.host == "" or self.user == "" or self.password == "" or self.hostip == "":
-                LOGGER.error('Blue Iris requires \'host\', \'hostip\', \'user\', and \'password\' parameters to be specified in custom configuration.')
+            if self.host == "" or self.user == "" or self.password == "":
+                LOGGER.error('Blue Iris requires \'host\', \'user\', and \'password\' parameters to be specified in custom configuration.')
                 return False
             else:
                 if self.connect(): 
