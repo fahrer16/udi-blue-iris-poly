@@ -95,6 +95,7 @@ class Controller(polyinterface.Controller):
             LOGGER.error('Error processing shortPoll for %s: %s', self.name, str(ex))
 
     def longPoll(self):
+        if not self.initialized: return False #ensure discovery is completed before polling.
         hostname = self.polyConfig['customParams']['hostip']
         response = os.system("ping -c 1 " + hostname)
         if response == 0:
