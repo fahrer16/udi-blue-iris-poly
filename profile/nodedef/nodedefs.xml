@@ -7,7 +7,7 @@
 			    <st id="ST" editor="bool" />
           <st id="GV1" editor="traffic_light" />
           <st id="GV2" editor="profile"/>
-          <st id="GV3" editor="bool />
+          <st id="GV3" editor="bool" />
 		    </sts>
         <cmds>
             <sends />
