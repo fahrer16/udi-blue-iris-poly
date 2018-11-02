@@ -7,7 +7,7 @@ CMD-ctl-SET_PROFILE-NAME = Set Profile
 ST-ctl-ST-NAME = NodeServer Online
 ST-ctl-GV1-NAME = Server Status
 ST-ctl-GV2-NAME = Profile Number
-ST-ctl-GV3-name = BI Host Up
+ST-ctl-GV3-NAME = BI Host Up
 
 # Camera Nodes:
 ND-camNode-NAME = Fixed Camera
