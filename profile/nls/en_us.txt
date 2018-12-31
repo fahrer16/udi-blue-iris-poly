@@ -2,11 +2,13 @@
 ND-controller-NAME = Blue Iris Server
 ND-controller-ICON = GenericCtl
 CMD-ctl-DISCOVER-NAME = Re-Discover
+CMD-ctl-UPDATE-NAME = Update
 CMD-ctl-SET_STATE-NAME = Set State
 CMD-ctl-SET_PROFILE-NAME = Set Profile
 ST-ctl-ST-NAME = NodeServer Online
 ST-ctl-GV1-NAME = Server Status
 ST-ctl-GV2-NAME = Profile Number
+ST-ctl-GV3-NAME = BI Host Up
 
 # Camera Nodes:
 ND-camNode-NAME = Fixed Camera
@@ -28,6 +30,7 @@ CMD-cams-PAUSE-NAME = Pause
 CMD-cams-CONTINUE-NAME = Continue
 CMD-cams-ENABLE-NAME = Enable
 CMD-cams-DISABLE-NAME = Disable
+CMD-cams-UPDATE-NAME = Update
 CMD-cams-PTZ-NAME = Pan-Tilt-Zoom
 CMD-cams-IR-NAME = IR
 CMD-cams-POSITION-NAME = Set Position
