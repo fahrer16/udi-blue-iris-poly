@@ -121,7 +121,7 @@ class Controller(polyinterface.Controller):
 
     def discover(self, *args, **kwargs):
         LOGGER.debug('Beginning Discovery on %s', str(self.name))
-        self.setDriver('GV3',0)
+        self.setDriver('GV3',1)
         try:
             self.cameras = self.cmd("camlist")
             for cam in self.cameras:
