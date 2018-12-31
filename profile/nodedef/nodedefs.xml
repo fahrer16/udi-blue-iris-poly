@@ -7,11 +7,13 @@
 			    <st id="ST" editor="bool" />
           <st id="GV1" editor="traffic_light" />
           <st id="GV2" editor="profile"/>
+          <st id="GV3" editor="bool" />
 		    </sts>
         <cmds>
             <sends />
             <accepts>
               <cmd id="DISCOVER" />
+              <cmd id="UPDATE" />
               <cmd id="SET_STATE">
                 <p id="" editor="traffic_light" init="GV1"/>
               </cmd>
@@ -42,6 +44,7 @@
               <cmd id="CONTINUE" />
               <cmd id="ENABLE" />
               <cmd id="DISABLE" />
+              <cmd id="UPDATE" />
               <cmd id="IR">
                 <p id="" editor="IR"/>
               </cmd>
@@ -69,6 +72,7 @@
         <cmd id="CONTINUE" />
         <cmd id="ENABLE" />
         <cmd id="DISABLE" />
+        <cmd id="UPDATE" />
         <cmd id="IR">
           <p id="" editor="IR"/>
         </cmd>
