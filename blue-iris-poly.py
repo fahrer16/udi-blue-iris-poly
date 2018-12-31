@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """
+This NodeServer has been modified by markv58 (Mark Vittes) to include a ping function to test if the Blue Iris
+pc is up and running. There are other modifications to update driver panels in the ISY should they be blank.
 This is a NodeServer for Blue Iris written by fahrer16 (Brian Feeney) 
 based on the template for Polyglot v2 written in Python2/3 by Einstein.42 (James Milne) milne.james@gmail.com
 Blue Iris json functionality based on 'blueiriscmd' project by magapp (https://github.com/magapp/blueiriscmd)
@@ -8,7 +10,7 @@ Blue Iris json functionality based on 'blueiriscmd' project by magapp (https://g
 import polyinterface
 import requests, json, hashlib
 import sys
-
+import os
 
 LOGGER = polyinterface.LOGGER
 SERVERDATA = json.load(open('server.json'))
@@ -19,6 +21,7 @@ class Controller(polyinterface.Controller):
         super().__init__(polyglot)
         self.name = 'Blue Iris'
         self.initialized = False
+        self.hostup = True
         self.tries = 0
 
     def start(self):
@@ -39,8 +42,13 @@ class Controller(polyinterface.Controller):
             else:
                 self.password = ""
 
-            if self.host == "" or self.user == "" or self.password == "":
-                LOGGER.error('Blue Iris requires \'host\', \'user\', and \'password\' parameters to be specified in custom configuration.')
+            if 'port' in self.polyConfig['customParams']:
+                self.port = self.polyConfig['customParams']['port']
+            else:
+                self.port =  ""
+
+            if self.host == "" or self.port =="" or self.user == "" or self.password == "":
+                LOGGER.error('Blue Iris requires \'host\', \'port\', \'user\', and \'password\' parameters to be specified in custom configuration.')
                 return False
             else:
                 if self.connect(): 
@@ -51,7 +59,7 @@ class Controller(polyinterface.Controller):
     def connect(self):
         try:
             LOGGER.info('Connecting to Blue Iris host %s', str(self.host))
-            self.url = "http://" + self.host + "/json"
+            self.url = "http://" + self.host + ":" + self.port + "/json"
 
             #Retrieve session ID from Blue Iris Server
             r = requests.post(self.url, data=json.dumps({"cmd":"login"}))
@@ -78,36 +86,48 @@ class Controller(polyinterface.Controller):
             LOGGER.error('Error connecting to Blue Iris Server, host: %s.  %s', str(self.host), str(ex))
             return False
 
+    def fillPanels(self, command):
+        self.reportDrivers()
 
     def shortPoll(self):
-        if not self.initialized: return False #ensure discovery is completed before polling
+        if not self.initialized or not self.hostup: return False #ensure discovery is completed and host is up before polling
         try:
             self.cameras = self.cmd("camlist")
             for node in self.nodes:
                 self.nodes[node].query()
         except Exception as ex:
             LOGGER.error('Error processing shortPoll for %s: %s', self.name, str(ex))
-
+            
     def longPoll(self):
-        pass
+        if not self.initialized: return False #ensure discovery is completed before polling.
+        response = os.system("ping -c 1 " + self.host)
+        if response == 0:
+            self.hostup = True
+            self.setDriver('GV3',1)
+            self.reportDrivers()
+        else:
+            LOGGER.info('The Blue Iris computer is Down')
+            self.setDriver('GV3',0)
+            self.hostup = False
 
     def query(self, command=None):
         try:
             _status = self.cmd("status")
             self.setDriver('GV1',_status["signal"])
             self.setDriver('GV2',_status["profile"])
+            self.setDriver('GV3',int(self.hostup))
         except Exception as ex:
             LOGGER.error('Error querying Blue Iris %s', self.name)
 
-
     def discover(self, *args, **kwargs):
         LOGGER.debug('Beginning Discovery on %s', str(self.name))
+        self.setDriver('GV3',0)
         try:
             self.cameras = self.cmd("camlist")
             for cam in self.cameras:
                 if 'ptz' in cam: #If there is not a 'ptz' element for this item, it's not a camera
                     _shortName = cam['optionValue']
-                    _address = _shortName.lower() #ISY address must be lower case but Blue Iris requires the name to be passed in the same case as it is defined so both are needed
+                    _address = _shortName.lower() #ISY address must be lower case but Blue Iris requires the name to be passed in the same case as it is defined so b$
                     _name = cam['optionDisplay']
                     if _address not in self.nodes and _name[0] != '+': #if the name starts with '+', it's not a camera
                         if cam['ptz']:
@@ -181,13 +201,14 @@ class Controller(polyinterface.Controller):
         except Exception as ex:
             LOGGER.error('Error setting profile of Blue Iris Server: %s', str(ex))
             return False
-    id = 'controller'
-    commands = {'DISCOVER': discover, 'SET_STATE': setState, 'SET_PROFILE': setProfile}
-    drivers = [{'driver': 'ST', 'value': 0, 'uom': 2}, #Polyglot connection status
-                {'driver': 'GV1', 'value': 0, 'uom': 25}, #Blue Iris Server Status (0=red, 1=green, 2=yellow)
-                {'driver': 'GV2', 'value':0, 'uom': 56} #Blue Iris Profile
-                ] 
 
+    id = 'controller'
+    commands = {'DISCOVER': discover, 'UPDATE': fillPanels, 'SET_STATE': setState, 'SET_PROFILE': setProfile}
+    drivers = [{'driver': 'ST', 'value': 1, 'uom': 2}, #Polyglot connection status
+                {'driver': 'GV1', 'value': 1, 'uom': 25}, #Blue Iris Server Status (0=red, 1=green, 2=yellow)
+                {'driver': 'GV2', 'value': 1, 'uom': 56}, #Blue Iris Profile
+                {'driver': 'GV3', 'value': 1, 'uom':2} #Host ping status
+                ] 
 
 class camNode(polyinterface.Node):
     def __init__(self, controller, primary, address, name, shortName):
@@ -218,6 +239,9 @@ class camNode(polyinterface.Node):
         LOGGER.info('disabling camera: %s', str(self.name))
         self.parent.cmd("camconfig", {"camera": self.shortName, "enable": False})
 
+    def fillPanels(self, command):
+        self.reportDrivers()
+
     def query(self, command=None):
         try:
             for cam in self.parent.cameras:
@@ -227,7 +251,7 @@ class camNode(polyinterface.Node):
         except Exception as ex:
             LOGGER.error('Error querying %s: %s', self.address, str(ex))
             return False
-
+            
         try:
             self.setDriver('ST', int(_cam["isTriggered"]))
             self.setDriver('GV1', int(_cam["isEnabled"]))
@@ -261,8 +285,8 @@ class camNode(polyinterface.Node):
                 self.parent.cmd("ptz",{"camera":self.shortName, "button":(_value + 34)})
 
         except Exception as ex:
-            LOGGER.error('Error processing PTZ command for %s: %s', self.name, str(ex))
-
+            LOGGER.error('Error processing PTZ command for %s: %s', self.name, str(ex))    
+            
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 2}, #Triggered, true or false
                {'driver': 'GV1', 'value':0, 'uom': 2}, #Enabled, true or false
                {'driver': 'GV2', 'value':0, 'uom': 2}, #Connected (online and signal present), true or false
@@ -274,8 +298,8 @@ class camNode(polyinterface.Node):
                ]
     id = 'camNode'
     commands = {
-                    'DON': trigger, 'PAUSE': pause, 'CONTINUE': unpause, 
-                    'ENABLE': enable, 'DISABLE': disable,
+                    'DON': trigger, 'PAUSE': pause, 'CONTINUE': unpause,
+                    'ENABLE': enable, 'DISABLE': disable, 'UPDATE': fillPanels,
                     'IR':ptz
                 }
 
@@ -307,6 +331,9 @@ class camNodePTZ(camNode):
     def ptz(self, command=None):
         super().ptz(command)
 
+    def fillPanels(self,command):
+        self.reportDrivers()
+
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 2}, #Triggered, true or false
                {'driver': 'GV1', 'value':0, 'uom': 2}, #Enabled, true or false
                {'driver': 'GV2', 'value':0, 'uom': 2}, #Connected (online and signal present), true or false
@@ -319,11 +346,10 @@ class camNodePTZ(camNode):
     id = 'camNodePTZ'
     commands = {
                     'DON': trigger, 'PAUSE': pause, 'CONTINUE': unpause, 
-                    'ENABLE': enable, 'DISABLE': disable, 'PTZ':ptz, 
+                    'ENABLE': enable, 'DISABLE': disable, 'UPDATE': fillPanels, 'PTZ':ptz, 
                     'IR':ptz, 'POSITION':ptz
                 }
-    
-    
+                
 if __name__ == "__main__":
     try:
         polyglot = polyinterface.Interface('BlueIrisNodeServer')
@@ -331,4 +357,4 @@ if __name__ == "__main__":
         control = Controller(polyglot)
         control.runForever()
     except (KeyboardInterrupt, SystemExit):
-        sys.exit(0)
+        sys.exit(0)   
