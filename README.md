@@ -1,7 +1,17 @@
+# This modified version
+pings the Blue Iris PC using the longPoll and returns either True or False that can be used in a program to send a notification or cycle a connected ON/OFF switch to reboot the pc. If rebooting, add a wait to the program to allow
+sufficient time for the pc to boot and stablize.
+The longPoll is the frequency which the host pc is pinged.
+If the host pc fails to respond to a ping the node server stops the shortPoll once the missed ping is detected and will
+resume once the pc is up and running again.
+
+An Update button has been added to populate blank status boxes.
+
+
 # Blue Iris Polyglot
 This is the Blue Iris Node Server for the ISY Polyglot V2 interface.  
 (c) fahrer16 aka Brian Feeney.  
-MIT license. 
+MIT license.
 
 Blue Iris uses a JSON API documented in the software's help file.  See the Blue Iris website here: http://blueirissoftware.com/.
 The Polyglot v2 Template written by Einstein42 was used as a template: https://github.com/Einstein42/udi-polyglot-interface
@@ -21,7 +31,8 @@ This node server will import cameras as ISY Nodes, continuously poll for new eve
   * Follow instructions here, starting with "Open Polyglot": https://github.com/Einstein42/udi-polyglotv2/wiki/Creating-a-NodeServer   
 
 ## Polyglot Custom Configuration Parameters
-* REQUIRED: Key:'host' Value: The IP address or host name of the Blue Iris server.  If port 80 is not used, add the port into the host value. i.e. "192.168.1.100:81", "BlueIrisServer:90", etc...
+* REQUIRED: Key:'host' Value: The IP address or host name of the Blue Iris server.  i.e. '192.168.1.100', 'BlueIrisServer', etc...
+* REQUIRED: Key:'port' Value: The port number. i.e. '80', '8950', etc
 * REQUIRED: Key:'user' Value: The Blue Iris user name to be used when connecting to Blue Iris.  This user will need to have administrator access in order to be able to trigger cameras.
 * REQUIRED: Key:'password' Value: The password of the Blue Iris user.
  
