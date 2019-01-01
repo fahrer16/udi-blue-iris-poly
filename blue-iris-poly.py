@@ -2,6 +2,7 @@
 """
 This NodeServer has been modified by markv58 (Mark Vittes) to include a ping function to test if the Blue Iris
 pc is up and running. There are other modifications to update driver panels in the ISY should they be blank.
+
 This is a NodeServer for Blue Iris written by fahrer16 (Brian Feeney) 
 based on the template for Polyglot v2 written in Python2/3 by Einstein.42 (James Milne) milne.james@gmail.com
 Blue Iris json functionality based on 'blueiriscmd' project by magapp (https://github.com/magapp/blueiriscmd)
@@ -100,17 +101,20 @@ class Controller(polyinterface.Controller):
             
     def longPoll(self):
         if not self.initialized: return False #ensure discovery is completed before polling.
-        response = os.system("ping -c 1 " + self.host)
-        if response == 0:
-            self.hostup = True
-            self.setDriver('GV3',1)
-            self.reportDrivers()
-        else:
-            LOGGER.info('The Blue Iris computer is Down')
-            self.setDriver('GV3',0)
-            self.hostup = False
+        try:
+            response = os.system("ping -c 1 " + self.host)
+            if response == 0:
+                self.setDriver('GV3',1)                
+                self.hostup = True
+            else:
+                LOGGER.info('The Blue Iris computer is Down')
+                self.setDriver('GV3',0)
+                self.hostup = False
+        except Exception as ex:
+            LOGGER.error('Error pinging the host %s', str(ex))
 
     def query(self, command=None):
+        if not self.hostup: return False
         try:
             _status = self.cmd("status")
             self.setDriver('GV1',_status["signal"])
@@ -122,6 +126,7 @@ class Controller(polyinterface.Controller):
     def discover(self, *args, **kwargs):
         LOGGER.debug('Beginning Discovery on %s', str(self.name))
         self.setDriver('GV3',1)
+        self.hostup = True
         try:
             self.cameras = self.cmd("camlist")
             for cam in self.cameras:
@@ -144,6 +149,7 @@ class Controller(polyinterface.Controller):
         LOGGER.info('Deleting Blue Iris controller')
 
     def cmd(self, cmd, params=dict()):
+        if not self.hostup: return False
         try:
             #LOGGER.debug('Sending command to Blue Iris, cmd: %s, params: %s', str(cmd), str(params))
             args = {"session": self.session, "response": self.loginHash, "cmd": cmd}
@@ -172,6 +178,8 @@ class Controller(polyinterface.Controller):
                 return True
         except Exception as ex:
             LOGGER.error('Error sending command to Blue Iris: %s', str(ex))
+            self.hostup = False
+            self.setDriver('GV3',0)
             return False
 
     def setState(self, command = None):
@@ -357,4 +365,4 @@ if __name__ == "__main__":
         control = Controller(polyglot)
         control.runForever()
     except (KeyboardInterrupt, SystemExit):
-        sys.exit(0)   
+        sys.exit(0)
