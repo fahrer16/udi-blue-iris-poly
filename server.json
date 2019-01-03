@@ -7,7 +7,7 @@
   "description": "Blue Iris UDI ISY Polyglot v2 Node Server",
   "notice": "Blue Iris is trademarked.  This Node Server is neither developed nor endorsed by Perspective Software or Universal Devices (UDI).  The author takes no responsibility for the function of the software or any results of its use.  Use at your own risk.",
   "shortPoll": "2",
-  "longPoll": "60",
+  "longPoll": "20",
   "credits": [
     {
       "title": "Blue Iris",
