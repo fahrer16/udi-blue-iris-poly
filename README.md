@@ -29,3 +29,4 @@ This node server will import cameras as ISY Nodes, continuously poll for new eve
 * 1.0.0: Initial Release
 * 1.0.1: Corrected "bool" editor in profile
 * 1.1.0: Added command to set server profile
+* 1.2.0: Added "Disconnected" state to Blue Iris Server Status displayed in ISY if the Blue Iris server does not respond to a request for its status.  Also added 'requests' to requirements file so it will be automatically installed if not already present.

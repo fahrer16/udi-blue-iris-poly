@@ -13,7 +13,7 @@
             <accepts>
               <cmd id="DISCOVER" />
               <cmd id="SET_STATE">
-                <p id="" editor="traffic_light" init="GV1"/>
+                <p id="" editor="set_status" init="GV1"/>
               </cmd>
               <cmd id="SET_PROFILE">
                 <p id="" editor="profile" init="GV2"/>

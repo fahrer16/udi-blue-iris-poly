@@ -67,3 +67,8 @@ ENUM_IR-1 = IR On
 LIGHT_STATES-0 = Red
 LIGHT_STATES-1 = Green
 LIGHT_STATES-2 = Yellow
+LIGHT_STATES-3 = Disconnected
+
+SET_STATUS-0 = Red
+SET_STATUS-1 = Green
+SET_STATUS-2 = Yellow

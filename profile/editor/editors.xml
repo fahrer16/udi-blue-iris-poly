@@ -18,6 +18,9 @@
       <range uom="25" subset="1-20" nls="POSITIONS"/>
     </editor>
     <editor id="traffic_light">
-      <range uom="25" subset="0-2" nls="LIGHT_STATES"/>
+      <range uom="25" subset="0-3" nls="LIGHT_STATES"/>
+    </editor>
+    <editor id="set_status">
+      <range uom="25" subset="0-2" nls="SET_STATUS"/>
     </editor>
 </editors>

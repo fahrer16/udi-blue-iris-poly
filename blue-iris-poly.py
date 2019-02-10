@@ -98,6 +98,7 @@ class Controller(polyinterface.Controller):
             self.setDriver('GV2',_status["profile"])
         except Exception as ex:
             LOGGER.error('Error querying Blue Iris %s', self.name)
+            self.setDriver('GV1',3) #If there was an error querying the server, set the status to "Disconnected" so that the ISY can trigger an appropriate action (after a time delay set in ISY program).
 
 
     def discover(self, *args, **kwargs):
@@ -184,7 +185,7 @@ class Controller(polyinterface.Controller):
     id = 'controller'
     commands = {'DISCOVER': discover, 'SET_STATE': setState, 'SET_PROFILE': setProfile}
     drivers = [{'driver': 'ST', 'value': 0, 'uom': 2}, #Polyglot connection status
-                {'driver': 'GV1', 'value': 0, 'uom': 25}, #Blue Iris Server Status (0=red, 1=green, 2=yellow)
+                {'driver': 'GV1', 'value': 0, 'uom': 25}, #Blue Iris Server Status (0=red, 1=green, 2=yellow, 3=disconnected)
                 {'driver': 'GV2', 'value':0, 'uom': 56} #Blue Iris Profile
                 ] 
 
