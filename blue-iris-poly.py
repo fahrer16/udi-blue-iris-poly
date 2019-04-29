@@ -48,6 +48,8 @@ class Controller(polyinterface.Controller):
         except Exception as ex:
             LOGGER.error('Error starting Blue Iris NodeServer: %s', str(ex))
 
+        self.fillPanels()
+        
     def connect(self):
         try:
             LOGGER.info('Connecting to Blue Iris host %s', str(self.host))
@@ -124,6 +126,10 @@ class Controller(polyinterface.Controller):
     def delete(self):
         LOGGER.info('Deleting Blue Iris controller')
 
+    def fillPanels(self):
+        for node in self.nodes:
+            self.nodes[node].reportDrivers()
+    
     def cmd(self, cmd, params=dict()):
         try:
             #LOGGER.debug('Sending command to Blue Iris, cmd: %s, params: %s', str(cmd), str(params))
