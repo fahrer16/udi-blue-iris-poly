@@ -72,12 +72,16 @@ class Controller(polyinterface.Controller):
             #Get System Name:
             self.system_name = r.json()["data"]["system name"]
             LOGGER.info('Connected to %s', str(self.system_name))
+            self.fillPanels()
             return True
 
         except Exception as ex:
             LOGGER.error('Error connecting to Blue Iris Server, host: %s.  %s', str(self.host), str(ex))
             return False
 
+    def fillPanels(self):
+        for node in self.nodes:
+            self.nodes[node].reportDrivers()
 
     def shortPoll(self):
         if not self.initialized: return False #ensure discovery is completed before polling
@@ -127,7 +131,7 @@ class Controller(polyinterface.Controller):
     def cmd(self, cmd, params=dict()):
         try:
             #LOGGER.debug('Sending command to Blue Iris, cmd: %s, params: %s', str(cmd), str(params))
-            args = {"session": self.session, "response": self.loginHash, "cmd": cmd}
+            args = {"session": self.session, "cmd": cmd} #v1.3.0: Removed "Response" from this.  It never needed to be here but v5 seems to have a problem with it.
             args.update(params)
             r = requests.post(self.url, data=json.dumps(args))
 
