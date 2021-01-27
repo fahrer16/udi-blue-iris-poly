@@ -188,7 +188,7 @@ class Controller(polyinterface.Controller):
             return False
     id = 'controller'
     commands = {'DISCOVER': discover, 'SET_STATE': setState, 'SET_PROFILE': setProfile}
-    drivers = [{'driver': 'ST', 'value': 0, 'uom': 2}, #Polyglot connection status
+    drivers = [{'driver': 'ST', 'value': 1, 'uom': 2}, #Polyglot connection status
                 {'driver': 'GV1', 'value': 0, 'uom': 25}, #Blue Iris Server Status (0=red, 1=green, 2=yellow, 3=disconnected)
                 {'driver': 'GV2', 'value':0, 'uom': 56} #Blue Iris Profile
                 ] 
