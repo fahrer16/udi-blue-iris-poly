@@ -152,6 +152,9 @@ class Controller(polyinterface.Controller):
                 else:
                     self.tries = 0
                     return True
+            elif 'profile' in _response and 'signal' in _response:
+                self.tries = 0
+                return _response
             else:
                 self.tries = 0
                 return True
