@@ -24,6 +24,7 @@ This node server will import cameras as ISY Nodes, continuously poll for new eve
 * REQUIRED: Key:'host' Value: The IP address or host name of the Blue Iris server.  If port 80 is not used, add the port into the host value. i.e. "192.168.1.100:81", "BlueIrisServer:90", etc...
 * REQUIRED: Key:'user' Value: The Blue Iris user name to be used when connecting to Blue Iris.  This user will need to have administrator access in order to be able to trigger cameras.
 * REQUIRED: Key:'password' Value: The password of the Blue Iris user.
+* OPTIONAL: Key:'debug' Value: True.  Enables debug logging for all commands issued to Blue Iris.
  
 ## Version History:
 * 1.0.0: Initial Release
@@ -33,3 +34,4 @@ This node server will import cameras as ISY Nodes, continuously poll for new eve
 * 1.3.0: Corrected "cmd" function to operate with Blue Iris v5.  Added command to report drivers on connection.
 * 1.3.1: Corrected default polyglot connection status
 * 1.3.2: Correct server profile and status on controller node
+* 1.3.3: Added debug logging for commands if custom parameter of "debug" is created with a value of "True"
