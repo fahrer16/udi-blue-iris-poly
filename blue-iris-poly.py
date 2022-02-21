@@ -20,6 +20,7 @@ class Controller(polyinterface.Controller):
         self.name = 'Blue Iris'
         self.initialized = False
         self.tries = 0
+        self.debug = False
 
     def start(self):
         LOGGER.info('Started Blue Iris NodeServer for v2 NodeServer version %s', str(VERSION))
@@ -45,6 +46,10 @@ class Controller(polyinterface.Controller):
             else:
                 if self.connect(): 
                     self.discover()
+                    
+            if 'debug' in self.polyConfig['customParams']:
+                self.debug = self.polyConfig['customParams']['debug']
+                
         except Exception as ex:
             LOGGER.error('Error starting Blue Iris NodeServer: %s', str(ex))
 
@@ -130,7 +135,8 @@ class Controller(polyinterface.Controller):
 
     def cmd(self, cmd, params=dict()):
         try:
-            #LOGGER.debug('Sending command to Blue Iris, cmd: %s, params: %s', str(cmd), str(params))
+            if self.debug:
+                LOGGER.debug('Sending command to Blue Iris, cmd: %s, params: %s', str(cmd), str(params))
             args = {"session": self.session, "cmd": cmd} #v1.3.0: Removed "Response" from this.  It never needed to be here but v5 seems to have a problem with it.
             args.update(params)
             r = requests.post(self.url, data=json.dumps(args))
@@ -140,7 +146,8 @@ class Controller(polyinterface.Controller):
                 LOGGER.error('Error sending command to Blue Iris, status code: %s: %s', str(r.status_code), str(r.text))
 
             _response = r.json()
-            #LOGGER.debug('Blue Iris Command Response: %s', str(_response))
+            if self.debug:
+                LOGGER.debug('Blue Iris Command Response: %s', str(_response))
             if 'data' in _response:
                 self.tries = 0
                 return _response["data"]
